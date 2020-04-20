@@ -3,4 +3,5 @@ steps:
   args: ['build', '-t', 'gcr.io/$PROJECT_ID/ringfit-slack', '--build-arg', 'SLACK_WEBHOOK_URL=$_SLACK_WEBHOOK_URL', '.']
 substitutions:
   _SLACK_WEBHOOK_URL: slack-url # default value
+timeout: 2000s
 images: ['gcr.io/$PROJECT_ID/ringfit-slack']
