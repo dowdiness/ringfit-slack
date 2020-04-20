@@ -1,3 +1,6 @@
+#![feature(proc_macro_hygiene, decl_macro)]
+#[macro_use] extern crate rocket;
+
 use reqwest;
 use scraper::{ Html, Selector };
 use std::collections::HashMap;
@@ -10,17 +13,23 @@ const URL:&str = "https://store.nintendo.co.jp/item/HAC_Q_AL3PA.html";
 // テスト：動物の森→在庫あり
 // const URL:&str = "https://store.nintendo.co.jp/item/HAC_J_ACBAA_32.html";
 
-fn main() {
+#[get("/")]
+fn index() -> &'static str {
     let html = fetch_html(URL).expect("CAN'T FETCH!!!!!");
     let is_sold_out = is_contain(html, SELECTOR.to_owned(), SEARCH_TEXT.to_owned());
 
     if !is_sold_out {
         send_slack(format!(":tada: 品切れではなさそう {}", URL));
+        "品切れではなさそう"
     } else {
         send_slack(format!(":tada: 品切れです {}", URL));
+        "品切れです"
     }
 }
 
+fn main() {
+    rocket::ignite().mount("/", routes![index]).launch();
+}
 
 /**
  * HTMLを取得
