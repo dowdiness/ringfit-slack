@@ -1,6 +1,7 @@
 use reqwest;
 use scraper::{ Html, Selector };
 use std::collections::HashMap;
+extern crate dotenv;
 
 const SEARCH_TEXT:&str = "品切れ";
 const SELECTOR:&str = ".item-cart-add-area__add-button";
@@ -15,6 +16,8 @@ fn main() {
 
     if !is_sold_out {
         send_slack(format!(":tada: 品切れではなさそう {}", URL));
+    } else {
+        send_slack(format!(":tada: 品切れです {}", URL));
     }
 }
 
@@ -53,6 +56,8 @@ fn is_contain(html: String, selector: String, search_text: String) -> bool {
  * slackのwebhookURLにPOST
  */
 fn send_slack(content: String) {
+    dotenv::dotenv().expect("Failed to read .env file");
+
     let url = std::env::var("SLACK_WEBHOOK_URL").expect("CAN'T GET `SLACK_WEBHOOK_URL` ENV");
 
     let mut map = HashMap::new();
