@@ -1,6 +1,6 @@
 steps:
-  - name: 'gcr.io/cloud-builders/docker'
-    id: 'ringfit-slack'
-    args: ['build', '--tag=gcr.io/$PROJECT_ID/ringfit-slack', "--build-arg", "SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL", '.']
-    timeout: 2400s
-  images: ['gcr.io/$PROJECT_ID/ringfit-slack']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/ringfit-slack', '--build-arg', 'SLACK_WEBHOOK_URL=$_SLACK_WEBHOOK_URL', '.']
+substitutions:
+  _SLACK_WEBHOOK_URL: slack-url # default value
+images: ['gcr.io/$PROJECT_ID/ringfit-slack']
