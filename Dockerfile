@@ -1,4 +1,4 @@
-FROM rust:latest
+FROM rustlang/rust:nightly
 
 # # キャッシュ
 # RUN cargo install cargo-build-deps
